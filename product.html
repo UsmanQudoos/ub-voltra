@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Product Details</title>
+
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+
+body{
+
+    background:#f5f5f5;
+
+}
+
+
+/* Header */
+
+
+header{
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:20px;
+
+    text-align:center;
+
+    font-size:30px;
+
+    font-weight:bold;
+
+}
+
+
+
+.container{
+
+    width:80%;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+    display:flex;
+
+    gap:40px;
+
+    align-items:center;
+
+}
+
+
+
+.container img{
+
+    width:350px;
+
+    height:350px;
+
+    object-fit:contain;
+
+}
+
+
+
+.details h1{
+
+    font-size:40px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+.price{
+
+    color:green;
+
+    font-size:28px;
+
+    font-weight:bold;
+
+    margin:15px 0;
+
+}
+
+
+
+.rating{
+
+    color:orange;
+
+    font-size:22px;
+
+}
+
+
+
+.description{
+
+    margin:20px 0;
+
+    line-height:1.6;
+
+    font-size:18px;
+
+}
+
+
+
+button{
+
+    padding:12px 25px;
+
+    border:none;
+
+    border-radius:5px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    margin:5px;
+
+}
+
+
+
+button:hover{
+
+    background:#084298;
+
+}
+
+
+
+.back{
+
+    background:#555;
+
+}
+
+
+
+@media(max-width:700px){
+
+
+.container{
+
+    width:90%;
+
+    flex-direction:column;
+
+    text-align:center;
+
+}
+
+
+.container img{
+
+    width:250px;
+
+    height:250px;
+
+}
+
+
+.details h1{
+
+    font-size:30px;
+
+}
+
+
+}
+
+
+</style>
+
+
+</head>
+
+
+<body>
+
+
+<header>
+
+🛒 ShopEasy Product Details
+
+</header>
+
+
+
+<div class="container" id="productBox">
+
+
+</div>
+
+
+
+
+<script>
+
+
+const products=[
+
+
+{
+id:1,
+name:"Wireless Headphones",
+price:2500,
+image:"headphone.jpg",
+rating:"⭐⭐⭐⭐⭐",
+description:"High quality wireless Bluetooth headphones with noise cancellation, powerful bass and long battery backup."
+},
+
+
+{
+id:2,
+name:"Gaming Keyboard",
+price:3500,
+image:"keyboard.jfif",
+rating:"⭐⭐⭐⭐",
+description:"RGB mechanical gaming keyboard with fast response keys and comfortable design."
+},
+
+
+{
+id:3,
+name:"Wireless Mouse",
+price:1500,
+image:"mouse.jfif",
+rating:"⭐⭐⭐⭐⭐",
+description:"Smooth wireless mouse with accurate sensor and ergonomic body."
+},
+
+
+{
+id:4,
+name:"HD Monitor",
+price:25000,
+image:"monitor.jfif",
+rating:"⭐⭐⭐⭐",
+description:"Full HD monitor with sharp colors and excellent viewing experience."
+}
+
+
+];
+
+
+
+
+// Get Product ID
+
+
+let id =
+localStorage.getItem("productID");
+
+
+
+// Find Product
+
+
+let product =
+products.find(p=>p.id==id);
+
+
+
+
+// Show Product
+
+
+document.getElementById("productBox").innerHTML=`
+
+<img src="${product.image}">
+
+
+<div class="details">
+
+
+<h1>${product.name}</h1>
+
+
+<div class="rating">
+
+${product.rating}
+
+</div>
+
+
+<div class="price">
+
+Rs ${product.price}
+
+</div>
+
+
+
+<p class="description">
+
+${product.description}
+
+</p>
+
+
+
+<button onclick="addToCart()">
+
+Add To Cart
+
+</button>
+
+
+
+<button class="back" onclick="goBack()">
+
+Back
+
+</button>
+
+
+</div>
+
+`;
+
+
+
+
+// Add To Cart
+
+
+function addToCart(){
+
+
+let cart=
+JSON.parse(localStorage.getItem("cart")) || [];
+
+
+
+cart.push(product);
+
+
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+
+
+alert("Product Added To Cart");
+
+
+}
+
+
+
+// Back Button
+
+
+function goBack(){
+
+window.location.href="online shoping website.html";
+
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>

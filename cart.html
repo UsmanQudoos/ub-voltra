@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shopping Cart</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f4f4;
+}
+
+header{
+
+background:#0d6efd;
+
+color:white;
+
+padding:20px;
+
+text-align:center;
+
+font-size:30px;
+
+font-weight:bold;
+
+}
+
+.cart-container{
+
+width:85%;
+
+margin:40px auto;
+
+background:white;
+
+padding:30px;
+
+border-radius:10px;
+
+box-shadow:0 0 10px rgba(0,0,0,.2);
+
+}
+
+.cart-item{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+border-bottom:1px solid #ddd;
+
+padding:20px 0;
+
+}
+
+.cart-item img{
+
+width:100px;
+
+height:100px;
+
+object-fit:contain;
+
+}
+
+.info{
+
+flex:1;
+
+margin-left:20px;
+
+}
+
+.info h2{
+
+margin-bottom:10px;
+
+}
+
+.price{
+
+color:green;
+
+font-size:20px;
+
+font-weight:bold;
+
+}
+
+.quantity{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+margin-top:10px;
+
+}
+
+.quantity button{
+
+width:35px;
+
+height:35px;
+
+font-size:18px;
+
+border:none;
+
+background:#0d6efd;
+
+color:white;
+
+cursor:pointer;
+
+border-radius:5px;
+
+}
+
+.remove{
+
+background:red;
+
+color:white;
+
+padding:10px 20px;
+
+border:none;
+
+cursor:pointer;
+
+border-radius:5px;
+
+}
+
+.total{
+
+margin-top:30px;
+
+font-size:25px;
+
+font-weight:bold;
+
+}
+
+.buttons{
+
+margin-top:20px;
+
+}
+
+.buttons button{
+
+padding:12px 25px;
+
+margin-right:10px;
+
+border:none;
+
+cursor:pointer;
+
+border-radius:5px;
+
+color:white;
+
+background:#0d6efd;
+
+}
+
+.clear{
+
+background:#333;
+
+}
+
+.checkout{
+
+background:green;
+
+}
+
+@media(max-width:700px){
+
+.cart-item{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.info{
+
+margin:20px 0;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+🛒 Shopping Cart
+
+</header>
+
+<div class="cart-container">
+
+<div id="cartItems">
+
+</div>
+
+<div class="total">
+
+Total : Rs <span id="total">0</span>
+
+</div>
+
+<div class="buttons">
+
+<button class="clear" onclick="clearCart()">
+
+Clear Cart
+
+</button>
+
+<button onclick="goHome()">
+
+Continue Shopping
+
+</button>
+
+<button class="checkout" onclick="checkout()">
+
+Checkout
+
+</button>
+
+</div>
+
+</div>
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// Add quantity to old products
+cart.forEach(item=>{
+    if(!item.quantity){
+        item.quantity = 1;
+    }
+});
+
+
+// Display Cart
+function displayCart(){
+
+    let cartItems = document.getElementById("cartItems");
+    let total = document.getElementById("total");
+
+    cartItems.innerHTML = "";
+
+    let totalPrice = 0;
+
+    if(cart.length == 0){
+
+        cartItems.innerHTML = "<h2>Your Cart Is Empty 🛒</h2>";
+        total.innerHTML = "0";
+        return;
+
+    }
+
+    cart.forEach((product,index)=>{
+
+        totalPrice += product.price * product.quantity;
+
+        cartItems.innerHTML += `
+
+        <div class="cart-item">
+
+            <img src="${product.image}" alt="${product.name}">
+
+            <div class="info">
+
+                <h2>${product.name}</h2>
+
+                <p class="price">
+                    Rs ${product.price}
+                </p>
+
+                <div class="quantity">
+
+                    <button onclick="decreaseQty(${index})">-</button>
+
+                    <strong>${product.quantity}</strong>
+
+                    <button onclick="increaseQty(${index})">+</button>
+
+                </div>
+
+            </div>
+
+            <button class="remove"
+            onclick="removeItem(${index})">
+
+            Remove
+
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    total.innerHTML = totalPrice;
+
+}
+
+
+// Increase Quantity
+function increaseQty(index){
+
+    cart[index].quantity++;
+
+    saveCart();
+
+}
+
+
+// Decrease Quantity
+function decreaseQty(index){
+
+    if(cart[index].quantity > 1){
+
+        cart[index].quantity--;
+
+    }
+
+    saveCart();
+
+}
+
+
+// Remove Product
+function removeItem(index){
+
+    cart.splice(index,1);
+
+    saveCart();
+
+}
+
+
+// Save Cart
+function saveCart(){
+
+    localStorage.setItem("cart",JSON.stringify(cart));
+
+    displayCart();
+
+}
+
+
+// Clear Cart
+function clearCart(){
+
+    if(confirm("Clear all products?")){
+
+        cart = [];
+
+        localStorage.removeItem("cart");
+
+        displayCart();
+
+    }
+
+}
+
+
+// Continue Shopping
+function goHome(){
+
+    window.location.href = "index.html";
+
+}
+
+
+// Checkout
+function checkout(){
+
+    if(cart.length == 0){
+
+        alert("Your cart is empty!");
+
+        return;
+
+    }
+
+    alert("Thank you for your order!");
+
+    localStorage.removeItem("cart");
+
+    cart=[];
+
+    displayCart();
+
+}
+
+
+// Load Cart
+displayCart();
+
+</script>
+
+</body>
+</html>

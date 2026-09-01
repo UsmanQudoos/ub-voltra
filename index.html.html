@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shopping Website</title>
+
+<head>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f5f5f5;
+}
+
+
+/* Header */
+
+header{
+
+    background:#0d6efd;
+    color:white;
+
+    padding:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+}
+
+
+.logo{
+
+    font-size:30px;
+    font-weight:bold;
+
+}
+
+
+.search input{
+
+    width:350px;
+
+    padding:12px;
+
+    border-radius:20px;
+
+    border:none;
+
+    outline:none;
+
+}
+
+
+
+.icons a{
+
+    color:white;
+
+    font-size:25px;
+
+    text-decoration:none;
+
+}
+
+
+/* Banner */
+
+
+.banner{
+
+    background:linear-gradient(120deg,#0d6efd,#6610f2);
+
+    color:white;
+
+    text-align:center;
+
+    padding:60px 20px;
+
+}
+
+
+.banner h1{
+
+    font-size:45px;
+
+}
+
+
+/* Products */
+
+
+#products{
+
+    padding:40px;
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(230px,1fr));
+
+    gap:25px;
+
+}
+
+
+
+.card{
+
+    background:white;
+
+    padding:20px;
+
+    text-align:center;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 15px #ccc;
+
+    transition:.3s;
+
+}
+
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+
+.card img{
+
+    width:180px;
+
+    height:180px;
+
+    object-fit:contain;
+
+}
+
+
+.price{
+
+    color:green;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+
+button{
+
+    background:#0d6efd;
+
+    color:white;
+
+    border:none;
+
+    padding:12px 20px;
+
+    margin:5px;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+
+button:hover{
+
+    background:#084298;
+
+}
+
+
+@media(max-width:700px){
+
+header{
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+
+.search input{
+
+width:280px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+<body>
+
+<!-- Header -->
+
+<header>
+
+<div class="logo">
+ShopEasy
+</div>
+
+<div class="search">
+
+<input type="text"
+id="searchBox"
+placeholder="Search Products...">
+
+</div>
+
+<div class="icons">
+
+<a href="cart.html">
+<i class="fa-solid fa-cart-shopping"></i>
+<span id="cartCount">0</span>
+</a>
+
+</div>
+
+</header>
+
+<!-- Banner -->
+
+<section class="banner">
+
+<h1>Welcome To ShopEasy</h1>
+
+<p>Best Products at Best Prices</p>
+
+</section>
+
+<!-- Products -->
+
+<section id="products">
+
+</section>
+
+<script>
+
+const products = [
+
+{
+id:1,
+name:"Wireless Headphones",
+price:2500,
+image:"headphone.jpg",
+rating:"⭐⭐⭐⭐⭐",
+description:"High quality wireless Bluetooth headphones with clear sound and long battery life."
+},
+
+
+{
+id:2,
+name:"Gaming Keyboard",
+price:3500,
+image:"keyboard.JFIF",
+rating:"⭐⭐⭐⭐",
+description:"RGB gaming keyboard with mechanical keys for professional gaming."
+},
+
+
+{
+id:3,
+name:"Wireless Mouse",
+price:1500,
+image:"mouse.JFIF",
+rating:"⭐⭐⭐⭐⭐",
+description:"Smooth wireless mouse with fast response and comfortable design."
+},
+
+
+{
+id:4,
+name:"HD Monitor",
+price:25000,
+image:"monitor.JFIF",
+rating:"⭐⭐⭐⭐",
+description:"Full HD monitor with sharp display and excellent colors."
+}
+
+
+];
+
+
+
+// Display Products
+
+function displayProducts(productList){
+
+
+let container=document.getElementById("products");
+
+container.innerHTML="";
+
+
+productList.forEach(product=>{
+
+
+container.innerHTML += `
+
+
+<div class="card">
+
+
+<img src="${product.image}">
+
+
+<h2>${product.name}</h2>
+
+
+<div class="rating">
+
+${product.rating}
+
+</div>
+
+
+<p class="price">
+
+Rs ${product.price}
+
+</p>
+
+
+
+<button onclick="viewProduct(${product.id})">
+
+View Details
+
+</button>
+
+
+
+<button onclick="addToCart(${product.id})">
+
+Add Cart
+
+</button>
+
+
+</div>
+
+
+`;
+
+
+});
+
+
+}
+
+
+
+// Open Product Details Page
+
+
+function viewProduct(id){
+
+
+localStorage.setItem(
+"productID",
+id
+);
+
+
+window.location.href="product.html";
+
+
+}
+
+
+
+
+// Add To Cart
+
+
+function addToCart(id){
+
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+
+
+let product =
+products.find(p=>p.id==id);
+
+
+
+cart.push(product);
+
+
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+
+
+updateCartCount();
+
+
+
+alert("Product Added To Cart");
+
+
+}
+
+
+
+
+// Cart Counter
+
+
+function updateCartCount(){
+
+
+let cart =
+JSON.parse(localStorage.getItem("cart")) || [];
+
+
+
+document.getElementById("cartCount").innerHTML =
+cart.length;
+
+
+}
+
+
+
+
+// Search Product
+
+
+document.getElementById("searchBox")
+.addEventListener("keyup",function(){
+
+
+
+let value =
+this.value.toLowerCase();
+
+
+
+let filtered =
+products.filter(product=>
+
+product.name.toLowerCase()
+.includes(value)
+
+);
+
+
+
+displayProducts(filtered);
+
+
+
+});
+
+
+
+
+// Start Website
+
+
+displayProducts(products);
+
+
+updateCartCount();
+
+
+
+</script>
+
+</body>
+</html>
